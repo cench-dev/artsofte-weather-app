@@ -1,6 +1,6 @@
 import { weatherQuery, parseWeatherData } from './api/weather-api.js';
 import { searchYoutubeMusic, parseYoutubeData } from './api/youtube-api.js';
-import { renderWeatherCard, renderMusicCard, renderWidget } from './renderWeather/render.js';
+import { renderWeatherCard, renderMusicCard, renderWidget } from './render/renderWeather.js';
 import { checkIsParamNum, checkIsValidLatitude, checkIsValidLongitude } from './validate.js';
 import { getTypeWeather } from './weather-type.js';
 

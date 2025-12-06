@@ -1,5 +1,5 @@
-import { getWeatherIcon } from '../weatherIcons.js';
-import { getCelsius } from '../converters.js';
+import { getWeatherIcon } from '../weather-icon.js';
+import { getCelsius } from '../converter.js';
 
 export function renderWeatherCard(currentWeather, result) {
     result.innerHTML = `
@@ -20,7 +20,6 @@ export function renderMusicCard(currentMusic, musicDiv) {
         <div class='music-result'>
             <span class='music-result__text'>Ваша песня дня:<br></span>
             <span class='music-result__text'>${currentMusic.track}<br></span>
-            <img src='${currentMusic.trackImg}'>
             <a href="${currentMusic.youtubeUrl}" target="_blank">Слушать на YouTube</a>
         </div>`;
 }

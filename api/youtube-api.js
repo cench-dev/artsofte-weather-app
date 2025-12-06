@@ -6,7 +6,6 @@ export async function searchYoutubeMusic(weatherType) {
 export function parseYoutubeData(response) {
     return {
         track: response.items[0].snippet.title,
-        trackImg: response.items[0].snippet.thumbnails.medium.url,
         videoId: response.items[0].id.videoId,
         url: `https://youtu.be/${response.items[0].id.videoId}`
     };
