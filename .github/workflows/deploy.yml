@@ -1,0 +1,37 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create config.js from secrets
+        run: |
+          echo "window.API_CONFIG = {" > config.js
+          echo "  WEATHER_API_KEY: '${{ secrets.WEATHER_API_KEY }}'," >> config.js
+          echo "  YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'," >> config.js
+          echo "  IS_PRODUCTION: true" >> config.js
+          echo "};" >> config.js
+          
+          echo "✅ config.js created"
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
