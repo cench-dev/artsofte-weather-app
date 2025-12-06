@@ -5,22 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,21 +18,13 @@ jobs:
           echo "  WEATHER_API_KEY: '${{ secrets.WEATHER_API_KEY }}'," >> config.js
           echo "  YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'," >> config.js
           echo "  IS_PRODUCTION: true," >> config.js
-          echo "  DEBUG_MODE: false" >> config.js
+          echo "  DEBUG_MODE: true" >> config.js
           echo "};" >> config.js
           
-          echo "console.log('✅ config.js created by GitHub Actions');" >> config.js
-          
-          touch .nojekyll
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+          echo "console.log('✅ config.js loaded from GitHub Actions');" >> config.js
       
       - name: Deploy to GitHub Pages
-        id: deployment 
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
