@@ -1,0 +1,13 @@
+config.js
+.env
+.env.*
+api-keys.json
+secrets.json
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+.vscode/
+.idea/
+*.swp
+*.swo
