@@ -4,26 +4,29 @@ on:
   push:
     branches: [main]
 
-permissions:
-  pages: write
-  id-token: write
-
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Create config.js from secrets
+      - name: Create config.js with API keys
         run: |
           echo "window.API_CONFIG = {" > config.js
           echo "  WEATHER_API_KEY: '${{ secrets.WEATHER_API_KEY }}'," >> config.js
           echo "  YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'," >> config.js
-          echo "  IS_PRODUCTION: true" >> config.js
+          echo "  IS_PRODUCTION: true," >> config.js
+          echo "  DEBUG_MODE: false" >> config.js
           echo "};" >> config.js
           
-          echo "✅ config.js created"
+          touch .nojekyll
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -35,3 +38,4 @@ jobs:
       
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+        id: deployment
