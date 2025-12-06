@@ -3,15 +3,23 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
@@ -26,6 +34,8 @@ jobs:
           echo "  DEBUG_MODE: false" >> config.js
           echo "};" >> config.js
           
+          echo "console.log('✅ config.js created by GitHub Actions');" >> config.js
+          
           touch .nojekyll
       
       - name: Setup Pages
@@ -37,5 +47,5 @@ jobs:
           path: '.'
       
       - name: Deploy to GitHub Pages
+        id: deployment 
         uses: actions/deploy-pages@v4
-        id: deployment
